@@ -4,5 +4,9 @@
 {% block content %}
 
 <h3>Tenants</h3>
-
+<ul>
+{% for d in domains %}
+<li>{{ d.domain }} managed by {{ d.email }}
+{% endfor %}
+</ul>
 {% endblock %}
