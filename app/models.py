@@ -20,4 +20,4 @@ class Domain(db.Model):
     email = db.Column(db.String(120), index=True, unique=False)
     next_phase = db.Column(db.Enum(PhaseEnum), default=PhaseEnum.sub_domain)
     next_mail_date = db.Column(db.Date(), default=in_6_months())
-    first_attempt = db.Column(db.Boolean(), default=False)
+    first_attempt = db.Column(db.Boolean(), default=True)
