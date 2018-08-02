@@ -1,8 +1,10 @@
-from flask import render_template, flash, redirect
+from flask import render_template, flash, redirect, request
 from app import application
 from app import db
 from app.forms import AddDomainForm
 from app.models import Domain
+from flask import abort
+import hashlib
 
 @application.route('/')
 @application.route('/index')
@@ -29,3 +31,16 @@ def add():
 def internal_error(error):
     return render_template('error.html', error=error)
 
+# yes, I do like to troll people
+@application.route('/cron.php', methods=['POST'])
+def cron():
+    data = request.form
+    h = hashlib.sha256()
+    h.update(application.config['SECRET_KEY'].encode())
+    h.update(b'cron')
+    if not "key" in data:
+        abort(403)
+    if data['key'] != h.hexdigest():
+        abort(403)
+    return "Ok !!"
+    # DO cron stuff
