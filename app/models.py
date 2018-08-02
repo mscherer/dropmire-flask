@@ -5,7 +5,7 @@ import datetime
 
 # hardcoded to be 6 months
 def in_6_months():
-    return datetime.date.today()  + datetime.timedelta(6*365/12)
+    return datetime.date.today()  + datetime.timedelta(weeks=26)
 
 class PhaseEnum(Enum):
     # when we match a subdomain
