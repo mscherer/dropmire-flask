@@ -14,10 +14,12 @@ class PhaseEnum(Enum):
     root_domain = 2
     # when no one answer
     manager = 3
+    # before first verification
+    need_verification = 4
 
 class Domain(db.Model):
     domain = db.Column(db.String(64), index=True, unique=True, primary_key=True)
     email = db.Column(db.String(120), index=True, unique=False)
-    next_phase = db.Column(db.Enum(PhaseEnum), default=PhaseEnum.sub_domain)
+    next_phase = db.Column(db.Enum(PhaseEnum), default=PhaseEnum.need_verification)
     next_mail_date = db.Column(db.Date(), default=in_6_months())
     first_attempt = db.Column(db.Boolean(), default=True)
