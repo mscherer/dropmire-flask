@@ -7,6 +7,10 @@ import datetime
 def in_6_months():
     return datetime.date.today()  + datetime.timedelta(weeks=26)
 
+def in_1_week():
+    return datetime.date.today()  + datetime.timedelta(weeks=1)
+
+
 class PhaseEnum(Enum):
     # when we match a subdomain
     sub_domain = 1
