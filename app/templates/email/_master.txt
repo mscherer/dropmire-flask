@@ -1,0 +1,3 @@
+{% include "email/_greetings.txt" %}
+{% block message %}{% endblock %}
+{% include "email/_signature.txt" %}

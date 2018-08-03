@@ -1,5 +1,5 @@
-Hi,
-
+{% extends "email/_master.txt" %}
+{% block message %}
 Someone (likely you) have added your email ({{ email }})
 as a point of contact for the servers under the domain {{ domain }}
 
@@ -9,7 +9,4 @@ To confirm that, please click on this link in the coming week:
 
 If this is wrong, please disregard this email, or get in touch with the application 
 owner.
-
--- 
-Faithfully yours,
-Some random bot
+{% endblock %}
