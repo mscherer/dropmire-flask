@@ -4,4 +4,5 @@ Flask-WTF
 Flask-Migrate
 Flask-Mail
 PyJWT
+dnspython
 gunicorn

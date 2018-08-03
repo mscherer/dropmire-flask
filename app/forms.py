@@ -3,6 +3,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Email, ValidationError
 from app.models import Domain
 from app import application
+import dns.resolver
 
 # TODO add a better validator
 #   check kerberos ID (or email if a alias ?)
@@ -20,7 +21,14 @@ class AddDomainForm(FlaskForm):
 
 
     def validate_domain(self, domain):
-        domain = Domain.query.filter_by(domain=domain.data.lower().strip()).first()
-        if domain is not None:
+        d = Domain.query.filter_by(domain=domain.data.lower().strip()).first()
+        if d is not None:
             raise ValidationError("Domain already entered")
-        # TODO
+
+        try:
+            dns.resolver.query(domain.data, "SOA")
+        except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer):
+            try:
+                dns.resolver.query(domain.data, "A")
+            except dns.resolver.NXDOMAIN:
+                raise ValidationError("Domain do not exist")
