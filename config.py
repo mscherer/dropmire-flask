@@ -5,4 +5,11 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE') or 'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
+
     EMAIL_DOMAIN = os.environ.get('EMAIL_DOMAIN') or None
+
+    ADMINS = os.environ.get('ADMINS', 'root@localhost').split(',')
+    MAIL_FROM = os.environ.get('MAIL_FROM', 'dropmire@example.org')
+
+    MAIL_SERVER = os.environ.get('MAIL_SERVER', 'localhost')
+    MAIL_PORT = os.environ.get('MAIL_PORT', 25)

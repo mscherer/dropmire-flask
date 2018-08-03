@@ -1,0 +1,15 @@
+Hi,
+
+Someone (likely you) have added your email ({{ email }})
+as a point of contact for the servers under the domain {{ domain }}
+
+To confirm that, please click on this link in the coming week:
+
+{{ url_for('verify_domain', _external=True, key=token) }}
+
+If this is wrong, please disregard this email, or get in touch with the application 
+owner.
+
+-- 
+Faithfully yours,
+Some random bot
