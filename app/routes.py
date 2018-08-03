@@ -2,10 +2,12 @@ from flask import render_template, flash, redirect, request
 from app import application
 from app import db
 from app.forms import AddDomainForm
-from app.models import Domain
+from app.models import Domain, in_6_months, PhaseEnum
 from flask import abort
 from app.email import send_verification_email
 import hashlib
+import jwt
+import datetime
 
 @application.route('/')
 @application.route('/index')
@@ -49,9 +51,38 @@ def cron():
     return "Ok !!"
     # DO cron stuff
 
-@application.route('/verif.php?key', methods=['GET'])
-def verify_domain():
-    pass    
+# TODO have a custom 403 to say "token is no longer valid"
+@application.route('/verif.php/<key>', methods=['GET'])
+def verify_domain(key):
+    try:
+        domain_to_verify = jwt.decode(key, application.config['SECRET_KEY'], algorithms=['HS256'])
+    except jwt.exceptions.DecodeError:
+        abort(403)
+    do = Domain.query.filter_by(domain=domain_to_verify['domain']).first()
+    if do is None:
+        abort(404)
+
+    # TODO in 3.7, I would be able to use date.fromisoformat
+    (y, m, d) = domain_to_verify['expire'].split('-')
+    expiration_date = datetime.date(int(y), int(m), int(d))
+
+
+    if expiration_date < datetime.date.today(): 
+        abort(403)
+
+    do.next_phase = PhaseEnum.sub_domain
+    do.next_mail_date = in_6_months()
+    do.email = domain_to_verify['email']
+    do.first_attempt = True
+
+    db.session.add(do)
+    db.session.commit()
+
+    flash('Domain {} verified'.format(do.domain))
+
+    return redirect('/index')
+
+
 
 # add a link to reset the countdown
 # /reset/domain/secretkey
