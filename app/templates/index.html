@@ -4,10 +4,10 @@
 {% block content %}
 
 <h3>Tenants</h3>
-{%- for p in data|sort -%}
-<h2>{{ p }}</h2>
+{% for p in data|sort %}
+<p class="domain"><h2>{{ p }}</h2>
 
-managed by {{ data[p].email }}
+<div class="main_email">managed by {{ data[p].email }}</div>
 
 {% for d in data[p].subdomains %}
 {% if loop.first %}
@@ -19,6 +19,6 @@ managed by {{ data[p].email }}
 </ul>
 {% endif %}
 {% endfor %}
-
+</p>
 {% endfor %}
 {% endblock %}
