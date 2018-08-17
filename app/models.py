@@ -10,7 +10,6 @@ def in_6_months():
 def in_1_week():
     return datetime.date.today()  + datetime.timedelta(weeks=1)
 
-
 class PhaseEnum(Enum):
     # when we match a subdomain
     sub_domain = 1
@@ -27,3 +26,14 @@ class Domain(db.Model):
     next_phase = db.Column(db.Enum(PhaseEnum), default=PhaseEnum.need_verification)
     next_mail_date = db.Column(db.Date(), default=in_6_months())
     first_attempt = db.Column(db.Boolean(), default=True)
+
+    def find_parent_domain(self):
+        d = self.domain.lower().split('.')
+        while len(d) != 1:
+            d = d[1:]
+            r = Domain.query.filter_by(domain='.'.join(d)).first()
+            if r is not None:
+                return r.domain
+        return None
+
+

@@ -4,9 +4,21 @@
 {% block content %}
 
 <h3>Tenants</h3>
-<ul>
-{% for d in domains %}
-<li>{{ d.domain }} managed by {{ d.email }}
-{% endfor %}
+{%- for p in data|sort -%}
+<h2>{{ p }}</h2>
+
+managed by {{ data[p].email }}
+
+{% for d in data[p].subdomains %}
+{% if loop.first %}
+<ul>Subdomains:
+{% endif %}
+<li>{{ d.domain }} managed by {{ d.email }}</li>
+
+{% if loop.last %}
 </ul>
+{% endif %}
+{% endfor %}
+
+{% endfor %}
 {% endblock %}

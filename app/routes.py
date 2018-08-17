@@ -12,8 +12,26 @@ import datetime
 @application.route('/')
 @application.route('/index')
 def index():
+    parent_domains = set()
     domains = Domain.query.all()
-    return render_template('index.html', domains=domains)
+    for d in domains:
+        p = d.find_parent_domain()
+        if p:
+            parent_domains.add(p)
+        else:
+            parent_domains.add(d.domain)
+
+    data = {}
+    for p in parent_domains:
+
+        data[p] = {}
+        data[p]['email'] = Domain.query.filter(Domain.domain==p).all()[0].email
+        data[p]['subdomains'] = []
+        for d in domains:
+            if d.find_parent_domain() == p:
+                data[p]['subdomains'].append({'domain': d.domain, 'email': d.email})
+
+    return render_template('index.html', data=data)
 
 @application.route('/add.html', methods=['GET', 'POST'])
 def add():
