@@ -14,5 +14,5 @@ mail = Mail(application)
 from app import routes, models, email
 
 if __name__ == "__main__":
-    application.run(port=8080)
+    application.run()
 
