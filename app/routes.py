@@ -3,6 +3,7 @@ from app import application
 from app import db
 from app.forms import AddDomainForm
 from app.models import Domain, in_6_months, PhaseEnum
+from app.cron import execute_cron
 from flask import abort
 from app.email import send_verification_email
 import hashlib
@@ -66,6 +67,7 @@ def cron():
         abort(403)
     if data['key'] != h.hexdigest():
         abort(403)
+    execute_cron()
     return "Ok !!"
     # DO cron stuff
 
@@ -99,12 +101,3 @@ def verify_domain(key):
     flash('Domain {} verified'.format(do.domain))
 
     return redirect('/index')
-
-
-
-# add a link to reset the countdown
-# /reset/domain/secretkey
-#  secretkey being sha256
-#    domain + date of next renewal + secret key
-#    so if the renewal is changed, key no longer valid
-#    need to decide the daate before sending the mail (to avoid corner case at midnight)
