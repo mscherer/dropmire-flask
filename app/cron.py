@@ -8,15 +8,16 @@ def execute_cron():
 
 def check_domain_validity():
     domain_to_verify = Domain.query()
-    org_re = re.compile(application.config['WHOIS_ORG_RE']) 
-    for d in domain_to_verify:
-        w = whois.whois(d.domain)
-        if not w['org']:
-            print('We need to remove the domain')
-            # remove the domain and send email
-            pass 
-        else:
-            if not org.re.match(d.domain):
-                print('The domain no longer belong to us')
-                pass
-     
+    if application.config['WHOIS_ORG_RE'] != '':
+        org_re = re.compile(application.config['WHOIS_ORG_RE']) 
+        for d in domain_to_verify:
+            w = whois.whois(d.domain)
+            if not w['org']:
+                print('We need to remove the domain')
+                # remove the domain and send email
+                pass 
+            else:
+                if not org.re.match(d.domain):
+                    print('The domain no longer belong to us')
+                    pass
+         
