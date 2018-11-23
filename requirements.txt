@@ -6,3 +6,4 @@ Flask-Mail
 PyJWT
 dnspython
 gunicorn
+python-whois

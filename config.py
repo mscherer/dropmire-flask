@@ -13,3 +13,4 @@ class Config(object):
 
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'localhost')
     MAIL_PORT = os.environ.get('MAIL_PORT', 25)
+    WHOIS_ORG_RE = os.environ.get('WHOIS_ORG_RE', 'Acme corp')
